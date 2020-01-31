@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View,StyleSheet } from 'react-native';
 
-export default function MyAccount(){
+export default function Register(){
     return(
         <View style={styles.container} >
-            <Text>MyAccount</Text>
+            <Text>Register</Text>
         </View>
     )
 }

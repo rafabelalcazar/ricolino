@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Image, Input, SocialIcon, Divider } from "react-native-elements";
-import burguer from "../../assets/img/burger.png";
+import burguer from "../../../assets/img/burger.png";
 import { Entypo } from "@expo/vector-icons";
 
 export default function Login() {

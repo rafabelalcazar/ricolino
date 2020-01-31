@@ -6,7 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import Restaurants from "../screens/Restaurants";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import Login from "../screens/Login";
+import StackAccount from "./StackAccount";
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
@@ -24,7 +24,7 @@ const TabNavigator = createBottomTabNavigator({
       }
   },
   Account: {
-    screen: Login,
+    screen: StackAccount,
     navigationOptions: {
         tabBarLabel: "Account",
         tabBarIcon: ({ tintColor }) => <MaterialIcons name="account-circle" color={tintColor} size={25} />
