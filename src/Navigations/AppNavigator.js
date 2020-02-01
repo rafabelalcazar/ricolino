@@ -31,9 +31,9 @@ const TabNavigator = createBottomTabNavigator({
       }
   }
 },{
-    initialRouteName:'Restaurants',
+    initialRouteName:'Account',
     tabBarOptions:{
-        activeTintColor:'#ff4530',
+        activeTintColor:'#4567ff',
         inactiveTintColor:'#444'
     }
     

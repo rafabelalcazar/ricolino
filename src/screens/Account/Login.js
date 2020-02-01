@@ -4,7 +4,9 @@ import { Image, Input, SocialIcon, Divider } from "react-native-elements";
 import burguer from "../../../assets/img/burger.png";
 import { Entypo } from "@expo/vector-icons";
 
-export default function Login() {
+export default function Login(props) {
+  console.log(props)
+  
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Deleciapp</Text>

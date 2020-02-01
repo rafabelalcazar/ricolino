@@ -5,7 +5,7 @@ import { Entypo } from "@expo/vector-icons";
 import { withNavigation } from 'react-navigation';
 
 function UserGuest(props) {
-    console.log(props);
+    // console.log(props);
     
   return (
     <View style={styles.container}>
