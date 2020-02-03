@@ -9,7 +9,7 @@ export default function Login(props) {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Deleciapp</Text>
+      <Text style={styles.text}>Ricolino</Text>
       <Image source={burguer} style={styles.img} />
 
       <Text style={[styles.text, { fontSize: 25 }]}>Iniciar sesión</Text>
@@ -21,7 +21,7 @@ export default function Login(props) {
       </View>
       <View style={[styles.section,{flexDirection:'row'}]}>
         <Text style={styles.textInfo}>¿No tienes cuenta?</Text>
-        <Text style={styles.textButton}>Registrate</Text>
+        <Text onPress={()=> props.navigation.navigate('Register') } style={styles.textButton}>Registrate</Text>
 
       </View>
 
