@@ -4,6 +4,8 @@ import { Input, CheckBox, Overlay, Button } from "react-native-elements";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
+import validator from "validator";
+import * as firebase from "firebase";
 
 export default function Register() {
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -14,13 +16,43 @@ export default function Register() {
   const [hidePassword, sethidePassword] = useState(true);
   const [hideRepeatPassword, sethideRepeatPassword] = useState(true);
 
-  const register = () => {
-    console.log(email);
-    console.log(password);
-    console.log(repeatPassword);
-    console.log(acceptTerms);
-  };
+  const register = async () => {
+    // console.log(email);
+    // console.log(password);
+    // console.log(repeatPassword);
+    // console.log(acceptTerms);
+    if (!email || !password || !repeatPassword || acceptTerms) {
+      console.log("Debe ingresar los valores para los campos");
+    } else {
+      if (validator.isEmail(email)) {
+        if (password == repeatPassword) {
+          // console.log("Las contraseñas coinciden");
+          await firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => console.log("Usuario creado correctamente"))
+            .catch(err => console.log("Error al crear usuario", err));
+            // TODO Navigate to MyAccount
+        } else {
+          console.log("Contraseñas no coinciden");
+        }
+      }
+    }
+    // if(validarEmail(email)){
+    //   console.log('Correo correcto');
 
+    // }else{
+    //   console.log('Correo incorrecto');
+
+    // }
+  };
+  // function  validarEmail(email) {
+  //   if ( /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email)){
+  //    return true;
+  //   } else {
+  //   return false;
+  //   }
+  // }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
