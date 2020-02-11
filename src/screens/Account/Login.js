@@ -7,10 +7,13 @@ import {
   Divider,
   Button
 } from "react-native-elements";
+import Toast from 'react-native-simple-toast';
 import burguer from "../../../assets/img/burger.png";
 import { Entypo } from "@expo/vector-icons";
 import validator from "validator";
 import * as firebase from "firebase";
+import * as Facebook from "expo-facebook";
+import { FacebookApi } from "../../utils/FacebookLogin";
 
 export default function Login(props) {
   const [email, setEmail] = useState();
@@ -26,6 +29,54 @@ export default function Login(props) {
         })
         .catch(err => console.log("Error al iniciar sesión", err));
     }
+    else{
+      Toast.show('Al paracer no ha ingresado un email valido', Toast.LONG)
+      console.log('Al parecer esto no es un email');
+      
+    }
+  };
+
+  const loginFacebook = async () => {
+    await Facebook.initializeAsync(FacebookApi.appID);
+    const {
+      type,
+      token,
+      expires,
+      permissions,
+      declinedPermissions
+    } = await Facebook.logInWithReadPermissionsAsync({
+      permissions: FacebookApi.permissions
+    });
+    if (type === "success") {
+      const credentials = await firebase.auth.FacebookAuthProvider.credential(
+        token
+      );
+      console.log(credentials);
+
+      await firebase
+        .auth()
+        .signInWithCredential(credentials)
+        .then(() => {
+          console.log("Login con Facebook correcto");
+          props.navigation.navigate("MyAccount");
+        })
+        .catch(() => console.log("Error al autenticar con Facebook"));
+
+      // Get the user's name using Facebook's Graph API
+      // const response = await fetch(
+      //   `https://graph.facebook.com/me?access_token=${token}`
+      // )
+      // .then(() => console.log(response.json()))
+      // await console.log(response.json())
+
+      // .catch(() => console.log("Error al obtener respuesta"));
+      // alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      // console.log(response.json());
+    } else {
+      // type === 'cancel'
+      console.log("Se canceló el inicio de sesión con Facebook");
+    }
+    // console.log("Estoy iniciando con FB", type);
   };
 
   // console.log(props)
@@ -76,6 +127,7 @@ export default function Login(props) {
           title="Facebook"
           button
           type="facebook"
+          onPress={loginFacebook}
         />
         <SocialIcon
           style={styles.socilButton}

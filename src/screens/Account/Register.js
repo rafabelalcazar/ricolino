@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { Input, CheckBox, Overlay, Button } from "react-native-elements";
+import Toast from "react-native-simple-toast";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import validator from "validator";
 import * as firebase from "firebase";
 
-export default function Register() {
+export default function Register(props) {
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [ loading, setLoading] = useState(false);
   const [seeTerms, setSeeTerms] = useState(false);
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
@@ -22,20 +24,34 @@ export default function Register() {
     // console.log(repeatPassword);
     // console.log(acceptTerms);
     if (!email || !password || !repeatPassword || acceptTerms) {
-      console.log("Debe ingresar los valores para los campos");
+      Toast.show("Debe ingresar los valores para los campos", Toast.LONG);
+      // console.log("Debe ingresar los valores para los campos");
     } else {
       if (validator.isEmail(email)) {
         if (password == repeatPassword) {
           // console.log("Las contraseñas coinciden");
+          setLoading(true)
           await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => console.log("Usuario creado correctamente"))
-            .catch(err => console.log("Error al crear usuario", err));
-            // TODO Navigate to MyAccount
+            .then(() => {
+              Toast.show("Usuario creado correctamente", Toast.LONG)
+              props.navigation.navigate('MyAccount')
+
+            } )
+            .catch(err => {
+              Toast.show("Error al crear usuario", Toast.LONG);
+              // console.log("Error al crear usuario", err);
+            });
+          setLoading(false) 
+          // TODO Navigate to MyAccount
         } else {
-          console.log("Contraseñas no coinciden");
+          Toast.show("Contraseñas no coinciden", Toast.LONG);
+          // console.log("Contraseñas no coinciden");
         }
+      }
+      else{
+        Toast.show("Formato de correo incorrecto", Toast.LONG);
       }
     }
     // if(validarEmail(email)){
@@ -109,7 +125,7 @@ export default function Register() {
               Acepto los terminos y condiciones de uso
             </Text>
           </View>
-          <Button title="Registrarme" onPress={register} />
+          <Button title="Registrarme" onPress={register}  loading={loading} />
           <Overlay
             isVisible={seeTerms}
             onBackdropPress={() => setSeeTerms(false)}
