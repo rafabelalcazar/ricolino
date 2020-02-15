@@ -7,19 +7,15 @@ const logout = async () => {
   await firebase.auth().signOut();
 };
 
-
-
-
-
-
 export default function UserLoged() {
 
-  const [dataUser,setDataUser] = useState({})
+  const [dataUser, setDataUser] = useState({})
+  const [reloadData, setReloadData] = useState(false)
 
   useEffect(() => {
-    ( async () => {
+    (async () => {
       const user = await firebase.auth().currentUser
-      const {email, displayName,photoURL} = user
+      const { email, displayName, photoURL } = user
       setDataUser({
         email,
         displayName,
@@ -28,11 +24,11 @@ export default function UserLoged() {
       console.log(dataUser);
     }
     )()
-  },[])
+  }, [reloadData])
   return (
     <View style={styles.container}>
       <Text style={styles.profile} >Perfil</Text>
-      <InfoUser name={dataUser.displayName} email={dataUser.email} photoURL={dataUser.photoURL} />
+      <InfoUser name={dataUser.displayName} email={dataUser.email} photoURL={dataUser.photoURL} setReloadData={setReloadData} />
       <Button title="Cerrar sesión" onPress={logout} />
     </View>
   );
@@ -41,13 +37,13 @@ export default function UserLoged() {
 const styles = StyleSheet.create({
   container: {
     // alignItems:'center',
-    padding:20,
+    padding: 20,
     flex: 1
   },
-  profile:{
-    alignSelf:'center',
-    color:"#456789",
-    fontSize:30,
-    
+  profile: {
+    alignSelf: 'center',
+    color: "#456789",
+    fontSize: 30,
+
   }
 });
