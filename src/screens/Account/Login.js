@@ -29,29 +29,32 @@ export default function Login(props) {
         })
         .catch(err => console.log("Error al iniciar sesión", err));
     }
-    else{
+    else {
       Toast.show('Al paracer no ha ingresado un email valido', Toast.LONG)
       console.log('Al parecer esto no es un email');
-      
+
     }
   };
 
   const loginFacebook = async () => {
-    await Facebook.initializeAsync(FacebookApi.appID);
-    const {
-      type,
-      token,
-      expires,
-      permissions,
-      declinedPermissions
-    } = await Facebook.logInWithReadPermissionsAsync({
-      permissions: FacebookApi.permissions
-    });
+    const res = await Facebook.initializeAsync(FacebookApi.appID)
+    console.log(res);
+
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+      FacebookApi.appID,
+      {
+        permissions: FacebookApi.permissions
+      }
+    );
+
+    console.log(type);
+    
+
     if (type === "success") {
       const credentials = await firebase.auth.FacebookAuthProvider.credential(
         token
       );
-      console.log(credentials);
+      // console.log(credentials);
 
       await firebase
         .auth()
@@ -119,7 +122,7 @@ export default function Login(props) {
       <View
         style={
           (styles.section,
-          { flexDirection: "row", justifyContent: "space-around" })
+            { flexDirection: "row", justifyContent: "space-around" })
         }
       >
         <SocialIcon
