@@ -9,7 +9,6 @@ const InfoUser = (props) => {
     const { name, email, photoURL, setReloadData } = props
 
     const changeAvatar = async () => {
-        // alert('Listo para cambiar imagen')
         const resultPermissions = await Permissions.askAsync(Permissions.CAMERA_ROLL)
         const statusPermissions = resultPermissions.status
         console.log(statusPermissions);

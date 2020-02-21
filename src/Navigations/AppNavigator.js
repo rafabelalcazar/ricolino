@@ -3,10 +3,10 @@ import { Text, View, StyleSheet } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import HomeScreen from "../screens/HomeScreen";
-import Restaurants from "../screens/Restaurants";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import StackAccount from "./StackAccount";
+import StackRestaurant from "./StackRestaurant";
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
@@ -17,7 +17,7 @@ const TabNavigator = createBottomTabNavigator({
     }
   },
   Restaurants: {
-    screen: Restaurants,
+    screen: StackRestaurant,
     navigationOptions: {
         tabBarLabel: "Restaurantes",
         tabBarIcon: ({ tintColor }) => <MaterialIcons name="restaurant" color={tintColor} size={25} />
