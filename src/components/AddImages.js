@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert
+} from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-elements";
+import NoImage from '../../assets/img/no-image.png';
 
 const AddImages = props => {
   const { images, setImages } = props;
-  const [banner, setBanner] = useState(null);
+  const [banner, setBanner] = useState("");
 
   const imagesChoice = async () => {
     const resultPermissions = await Permissions.askAsync(
@@ -38,47 +46,47 @@ const AddImages = props => {
 
   const deleteImage = image => {
     console.log(image);
-    Alert.alert(
-        "Eliminar imagen",
-        "¿Está seguro de eliminar esta image?",
-        [
-            {
-                text:'Cancelar',
-                onPress: ()=> console.log('Canceló la operación')    
-            },
-            {
-                text:'Eliminar',
-                onPress: ()=> setImages(images.filter( imageURI => imageURI != image ))
-                 
-            }
-        ]
-    )
-  };
-
-  const imageBanner = index => {
-    setBanner(index);
+    Alert.alert("Eliminar imagen", "¿Está seguro de eliminar esta image?", [
+      {
+        text: "Cancelar",
+        onPress: () => console.log("Canceló la operación")
+      },
+      {
+        text: "Eliminar",
+        onPress: () => setImages(images.filter(imageURI => imageURI != image))
+      }
+    ]);
   };
 
   return (
-    <View style={styles.container}>
-      {images.length < 5 && (
-        <TouchableOpacity onPress={imagesChoice} style={styles.addButton}>
-          <Entypo name="camera" size={30} color="#666" />
-        </TouchableOpacity>
-      )}
+    <View  >
+        <Image style={{width:'100%',height:250}} resizeMode='cover' source={ banner === ""?  NoImage :{uri:images[banner]}  } />
+          <Text>Selecciona las imagenes del restaurante</Text>
+      <View style={styles.container}>
+        {images.length < 5 && (
+          <TouchableOpacity onPress={imagesChoice} style={styles.addButton}>
+            <Entypo name="camera" size={30} color="#666" />
+          </TouchableOpacity>
+        )}
 
-      {images.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          onLongPress={()=> deleteImage(item)}
-          onPress={() => imageBanner(index)}
-          style={
-            banner == index ? { borderColor: "#4444aa", borderWidth: 2 } : null
-          }
-        >
-          <Image source={{ uri: item }} style={styles.addButton} />
-        </TouchableOpacity>
-      ))}
+        {images.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            onLongPress={() => deleteImage(item)}
+            onPress={() => setBanner(index)}
+          >
+            <Image
+              source={{ uri: item }}
+              style={[
+                styles.addButton,
+                banner == index
+                  ? { borderColor: "#ffbb66", borderWidth: 3 }
+                  : null
+              ]}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 };
@@ -88,15 +96,15 @@ export default AddImages;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
     // justifyContent:'space-between'
   },
   addButton: {
     backgroundColor: "#bbb",
     justifyContent: "center",
     alignItems: "center",
-    width: 90,
-    height: 90
+    width: 70,
+    height: 70
     // borderRadius: 8,
     // margin: 5
   }
